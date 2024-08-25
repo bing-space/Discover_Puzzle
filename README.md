@@ -5,13 +5,16 @@
 > nodemon app.js
 ```
 
-## Discover Puzzle
+## Discover Puzzle NPM
 ```
 > npm init -y
-> npm express
+> npm i express
+> npm i mongoose ejs
 ```
 
 ## Folders/Files
 ```
-* apple.js
+app.js
+[Views Folder]
+- home.ejs
 ```
