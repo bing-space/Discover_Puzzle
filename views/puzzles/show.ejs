@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Puzzle Show</h1>
+
+    <h4>Title: </h4><%= puzzle.title %>
+    <h4>Piece Number: </h4><%= puzzle.piece %>
+    <h4>Size: </h4><%= puzzle.size %>
+    <h4>Keyword: </h4><%= puzzle.keyword %>
+
+    <form action="/puzzles/<%= puzzle._id%>?_method=DELETE" method="post">
+        <button>Delete Puzzle</button> 
+    </form>
+</body>
+</html>

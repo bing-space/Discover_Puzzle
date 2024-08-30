@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Edit Puzzle</h1>
+
+    <form action="/puzzles/<%= puzzle._id%>?_method=PUT" method="POST">
+        <section>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" value="<%= puzzle.title %>">
+        </section>
+        <section>
+            <label for="piece">Piece</label>
+            <input type="number" name="piece" id="piece" value="<%= puzzle.piece %>">
+        </section>
+        <section>
+            <label for="size">Size</label>
+            <input type="text" name="size" id="size" value="<%= puzzle.size %>">
+        </section>
+        <button>Submit</button>
+    </form>
+</body>
+</html>
