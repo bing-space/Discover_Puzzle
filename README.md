@@ -11,6 +11,7 @@
 > npm i express
 > npm i mongoose ejs
 > npm i method-override
+> npm i ejs-mate
 ```
 
 ## Folders/Files
@@ -24,6 +25,11 @@ views
    |- index.ejs
    |- new.ejs
    |- show.ejs
+|- layouts
+   |- boilerplate.ejs
+|- partials
+   |- footer.ejs
+   |- header.ejs
 seeds
 |- index.js
 |- seedHelpers.js

@@ -24,7 +24,10 @@ const seedDB = async () => {
         const createPuzzle = new Puzzle({
             title: `${sample(title)}`,
             piece: `${sample(piece)}`,
-            size:  `${sample(size)}`
+            size:  `${sample(size)}`,
+            manufacturer: 'Manufacturer Name',
+            imageUrl: 'https://images.unsplash.com/photo-1598983868388-46f2c98b2e77?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            keyword: ['cartoon','snoopy','peanuts']
         })
         await createPuzzle.save();
     }

@@ -1,20 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Puzzle Show</h1>
+<% layout('layouts/boilerplate') %>
 
-    <h4>Title: </h4><%= puzzle.title %>
-    <h4>Piece Number: </h4><%= puzzle.piece %>
-    <h4>Size: </h4><%= puzzle.size %>
-    <h4>Keyword: </h4><%= puzzle.keyword %>
+    <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <img src="<%= puzzle.imageUrl %>" class="card-img-top" alt="...">
+          </div>
+          <div class="col-6">
+            <h1><%= puzzle.title %></h1>
+            <table class="table">
+                <tbody>
+                  <tr>
+                    <th scope="row">Piece Number:</th>
+                    <td><%= puzzle.piece %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Size:</th>
+                    <td><%= puzzle.size %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Manufacturer:</th>
+                    <td colspan="2"><%= puzzle.manufacturer %></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Keyword:</th>
+                    <td colspan="2"><%= puzzle.keyword %></td>
+                  </tr>
+                </tbody>
+              </table>
 
-    <form action="/puzzles/<%= puzzle._id%>?_method=DELETE" method="post">
-        <button>Delete Puzzle</button> 
-    </form>
-</body>
-</html>
+            <div class="d-grid gap-2">
+                <form class="d-grid gap-2" action="/puzzles/<%= puzzle._id%>/edit">
+                    <button type="submit" class="btn btn-outline-primary">Edit</button>
+                </form>
+
+                <form class="d-grid gap-2" action="/puzzles/<%= puzzle._id%>?_method=DELETE" method="post">
+                    <button type="submit" class="btn btn-outline-danger">Delete Puzzle</button> 
+                </form>              
+            </div>
+          </div>
+        </div>
+    </div>

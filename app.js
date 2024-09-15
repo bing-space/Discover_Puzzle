@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override')
+const engine = require('ejs-mate');
 const Puzzle = require('./models/puzzle')
 
 mongoose.connect('mongodb://127.0.0.1:27017/discover-puzzle')
@@ -14,7 +15,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/discover-puzzle')
         console.log(err)
     })
 
-
+app.engine('ejs', engine);
 app.set('view engine','ejs');
 app.set('views', path.join(__dirname,'views'))
 app.use(express.urlencoded({extended: true}))
@@ -40,7 +41,7 @@ app.post('/puzzles', async(req,res) =>{
 // GET :: get puzzles list:
 app.get('/puzzles', async (req, res) => {
     const puzzles = await Puzzle.find({});
-    // console.log(puzzles)
+    console.log(puzzles)
     res.render('puzzles/index', {puzzles})
 })
 // GET :: show puzzle detail by id
