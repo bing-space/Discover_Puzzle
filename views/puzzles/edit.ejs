@@ -3,32 +3,48 @@
         <div class="card-body">
             <h1>Edit Puzzle</h1>
 
-            <form action="/puzzles/<%= puzzle._id%>?_method=PUT" method="POST">
+            <form action="/puzzles/<%= puzzle._id%>?_method=PUT" method="POST" nonvalidate class="validated-form">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input type="text" name="title" id="title" class="form-control" value="<%= puzzle.title %>">
+                    <input type="text" name="puzzle[title]" id="title" class="form-control" value="<%= puzzle.title %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="piece" class="form-label">Piece</label>
-                    <input type="number" name="piece" id="piece" class="form-control" value="<%= puzzle.piece %>">
+                    <input type="number" name="puzzle[piece]" id="piece" class="form-control" value="<%= puzzle.piece %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="size" class="form-label">Size / Dimensions </label>
-                    <input type="text" name="size" id="size" class="form-control" value="<%= puzzle.size %>">
+                    <input type="text" name="puzzle[size]" id="size" class="form-control" value="<%= puzzle.size %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="imageUrl" class="form-label">Image URL </label>
-                    <input type="text" name="imageUrl" id="imageUrl" class="form-control"
-                        value="<%= puzzle.imageUrl %>">
+                    <label for="image" class="form-label">Image URL </label>
+                    <input type="text" name="puzzle[image]" id="image" class="form-control" value="<%= puzzle.image %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="manufacturer" class="form-label">Manufacturer</label>
-                    <input type="text" name="manufacturer" id="manufacturer" class="form-control"
-                        value="<%= puzzle.manufacturer %>">
+                    <input type="text" name="puzzle[manufacturer]" id="manufacturer" class="form-control" value="<%= puzzle.manufacturer %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="keyword" class="form-label">Puzzle Keywords(Separate by Space)</label>
-                    <input type="text" name="keyword" id="keyword" class="form-control" value="<%= puzzle.keyword %>">
+                    <input type="text" name="puzzle[keyword]" id="keyword" class="form-control" value="<%= puzzle.keyword %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="d-grid gap-2">
                     <button class="btn btn-primary" type="submit">Submit</button>

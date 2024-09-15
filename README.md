@@ -12,11 +12,13 @@
 > npm i mongoose ejs
 > npm i method-override
 > npm i ejs-mate
+> npm i joi
 ```
 
 ## Folders/Files
 ```
 app.js
+schemas.js
 models
 |- puzzle.js
 views
@@ -30,7 +32,12 @@ views
 |- partials
    |- footer.ejs
    |- header.ejs
+|- error.ejs
+|- home.ejs
 seeds
 |- index.js
 |- seedHelpers.js
+utils
+|- catchAsync.js
+|- ExpressError.js
 ```

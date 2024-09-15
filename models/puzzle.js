@@ -6,7 +6,7 @@ const PuzzleSchema = new Schema({
     piece: Number,
     size: String,
     manufacturer: String,
-    imageUrl: String,
+    image: String,
     keyword: Array
 });
 
