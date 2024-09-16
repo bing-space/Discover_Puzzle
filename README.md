@@ -13,6 +13,8 @@
 > npm i method-override
 > npm i ejs-mate
 > npm i joi
+> npm i connect-flash
+> npm i express-session
 ```
 
 ## Folders/Files
@@ -21,6 +23,7 @@ app.js
 schemas.js
 models
 |- puzzle.js
+|- review.js
 views
 |- puzzles
    |- edit.ejs
@@ -32,6 +35,7 @@ views
 |- partials
    |- footer.ejs
    |- header.ejs
+   |- flash.ejs
 |- error.ejs
 |- home.ejs
 seeds
@@ -40,4 +44,10 @@ seeds
 utils
 |- catchAsync.js
 |- ExpressError.js
+public
+|- javascript
+   |- validForms.js
+routes
+|- puzzles.js
+|- reviews.js
 ```
