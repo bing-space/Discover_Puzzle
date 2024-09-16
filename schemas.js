@@ -10,3 +10,11 @@ module.exports.puzzleSchema = Joi.object({
         keyword: Joi.string().required()
     }).required()
 })
+
+module.exports.reviewSchema = Joi.object({
+    review: Joi.object({
+        body: Joi.string().required(),
+        funRating: Joi.number().required().min(1).max(5),
+        difficultyRating: Joi.number().required().min(1).max(5)
+    }).required()
+})

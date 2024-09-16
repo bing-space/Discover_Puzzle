@@ -6,8 +6,9 @@ const methodOverride = require('method-override');
 const engine = require('ejs-mate');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
-const {puzzleSchema} = require('./schemas.js')
+const {puzzleSchema, reviewSchema} = require('./schemas.js')
 const Puzzle = require('./models/puzzle');
+const Review = require('./models/review');
 
 mongoose.connect('mongodb://127.0.0.1:27017/discover-puzzle')
     .then(() =>{
@@ -27,6 +28,16 @@ app.use(methodOverride('_method'))
 
 const validatePuzzle = (req,res, next) => {
     const {error} = puzzleSchema.validate(req.body);
+    console.log(error)
+    if(error){
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    }else{
+        next();
+    }
+}
+const validateReview = (req,res, next) => {
+    const {error} = reviewSchema.validate(req.body);
     console.log(error)
     if(error){
         const msg = error.details.map(el => el.message).join(',');
@@ -62,7 +73,7 @@ app.get('/puzzles', catchAsync(async (req, res) => {
 // GET :: show puzzle detail by id
 app.get('/puzzles/:id', catchAsync(async(req,res) => {
     const {id} = req.params;
-    const puzzle = await Puzzle.findById(id);
+    const puzzle = await Puzzle.findById(id).populate('reviews');;
     res.render('puzzles/show', {puzzle})
 }))
 // GET :: get puzzle edit form
@@ -85,6 +96,28 @@ app.delete('/puzzles/:id', catchAsync(async (req, res) => {
     const puzzle = await Puzzle.findByIdAndDelete(id);
     res.redirect('/puzzles');
 }))
+
+/**
+ * CRUD Section: Review
+ */
+
+// Post review
+app.post('/puzzles/:id/reviews',validateReview, catchAsync( async (req, res) => {
+    const puzzle = await Puzzle.findById(req.params.id)
+    const review = new Review(req.body.review)
+    puzzle.reviews.push(review)
+    await review.save();
+    await puzzle.save();
+    res.redirect(`/puzzles/${puzzle._id}`)
+}))
+// Delete review
+app.delete('/puzzles/:id/reviews/:reviewId', catchAsync(async(req, res) => {
+    const { id, reviewId } = req.params;
+    await Puzzle.findByIdAndUpdate(id, {$pull: {reviews: reviewId}})
+    await Review.findByIdAndDelete(req.params.reviewId) // Will call middleware
+    res.redirect(`/puzzles/${id}`)
+}))
+
 
 // Handle Error
 app.all('*', (req,res,next) => {

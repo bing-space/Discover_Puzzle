@@ -1,42 +1,103 @@
 <% layout('layouts/boilerplate') %>
 
-    <div class="container">
-        <div class="row">
-          <div class="col-6">
-            <img src="<%= puzzle.image %>" class="card-img-top" alt="...">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-md-5 col-lg-6">
+        <img src="<%= puzzle.image %>" class="card-img-top" alt="...">
+      </div>
+      <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
+        <h1>
+          <%= puzzle.title %>
+        </h1>
+        <table class="table">
+          <tbody>
+            <tr>
+              <th scope="row">Piece Number:</th>
+              <td>
+                <%= puzzle.piece %>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Size:</th>
+              <td>
+                <%= puzzle.size %>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Manufacturer:</th>
+              <td colspan="2">
+                <%= puzzle.manufacturer %>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Keyword:</th>
+              <td colspan="2">
+                <%= puzzle.keyword %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="d-grid gap-2">
+          <form class="d-grid gap-2" action="/puzzles/<%= puzzle._id%>/edit">
+            <button type="submit" class="btn btn-outline-primary">Edit</button>
+          </form>
+
+          <form class="d-grid gap-2" action="/puzzles/<%= puzzle._id%>?_method=DELETE" method="post">
+            <button type="submit" class="btn btn-outline-danger">Delete Puzzle</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-3 pt-3 pb-3 bg-light">
+    <form action="/puzzles/<%= puzzle._id%>/reviews" method="post" class="mb-3 validated-form" novalidate>
+      <div class="row">
+        <div class="col-sm-5 col-md-6">
+          <div class="mb-3">
+            <label class="form-label fs-5 fw-bold" for="funRating">Puzzle Fun Rating</label>
+            <input type="range" class="form-range" min="1" max="5" id="funRating" name="review[funRating]" required>
           </div>
-          <div class="col-6">
-            <h1><%= puzzle.title %></h1>
-            <table class="table">
-                <tbody>
-                  <tr>
-                    <th scope="row">Piece Number:</th>
-                    <td><%= puzzle.piece %></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Size:</th>
-                    <td><%= puzzle.size %></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Manufacturer:</th>
-                    <td colspan="2"><%= puzzle.manufacturer %></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Keyword:</th>
-                    <td colspan="2"><%= puzzle.keyword %></td>
-                  </tr>
-                </tbody>
-              </table>
-
-            <div class="d-grid gap-2">
-                <form class="d-grid gap-2" action="/puzzles/<%= puzzle._id%>/edit">
-                    <button type="submit" class="btn btn-outline-primary">Edit</button>
-                </form>
-
-                <form class="d-grid gap-2" action="/puzzles/<%= puzzle._id%>?_method=DELETE" method="post">
-                    <button type="submit" class="btn btn-outline-danger">Delete Puzzle</button> 
-                </form>              
-            </div>
+          <div class="mb-3">
+            <label class="form-label fs-5 fw-bold" for="difficultyRating">Puzzle Difficulty Rating</label>
+            <input type="range" class="form-range" min="1" max="5" id="difficultyRating" name="review[difficultyRating]" required>
           </div>
         </div>
-    </div>
+        <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
+          <label class="form-label fs-5 fw-bold" for="body">Leave a Review</label>
+          <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="d-grid gap-2 mt-2">
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="container mt-3 pt-3 pb-3 bg-light">
+
+    <% for(let review of puzzle.reviews) { %>
+      <div class="card mt-3">
+          <div class="card-body">
+              <h5 class="card-title">
+                  Fun Rating: <%= review.funRating %>
+              </h5>
+              <h5 class="card-title">
+                  Difficulty Rating: <%= review.difficultyRating %>
+              </h5>
+              <p class="card-text">
+                  <%= review.body %>
+              </p>
+              <form class="d-inline" action="/puzzles/<%= puzzle._id%>/reviews/<%= review._id %>?_method=DELETE"
+                  method="post">
+                  <button class="btn btn-sm btn-danger">Delete</button>
+              </form>
+          </div>
+      </div>
+  <% } %>
+
+  </div>
