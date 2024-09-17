@@ -15,15 +15,18 @@
 > npm i joi
 > npm i connect-flash
 > npm i express-session
+> npm i passport passport-local passport-local-mongoose
 ```
 
 ## Folders/Files
 ```
 app.js
 schemas.js
+middleware.js
 models
 |- puzzle.js
 |- review.js
+|- user.js
 views
 |- puzzles
    |- edit.ejs
@@ -36,6 +39,9 @@ views
    |- footer.ejs
    |- header.ejs
    |- flash.ejs
+|- users
+   |- login.ejs
+   |- register.ejs
 |- error.ejs
 |- home.ejs
 seeds
@@ -47,6 +53,7 @@ utils
 public
 |- javascript
    |- validForms.js
+|- stylesheets
 routes
 |- puzzles.js
 |- reviews.js

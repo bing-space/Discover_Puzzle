@@ -4,6 +4,8 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const Puzzle = require('../models/puzzle');
 const {puzzleSchema} = require('../schemas.js')
+const {isLoggedIn} = require('../middleware')
+
 
 const validatePuzzle = (req,res, next) => {
     const {error} = puzzleSchema.validate(req.body);
@@ -17,11 +19,11 @@ const validatePuzzle = (req,res, next) => {
 }
 
 // GET :: get the new puzzle form
-router.get('/new', (req,res) => {
+router.get('/new',isLoggedIn, (req,res) => {
     res.render('puzzles/new')
 })
 // POST :: post the new puzzle form
-router.post('/', validatePuzzle, catchAsync(async(req,res) =>{
+router.post('/', validatePuzzle,isLoggedIn, catchAsync(async(req,res) =>{
     const newPuzzle = new Puzzle(req.body.puzzle);
     console.log(newPuzzle)
     await newPuzzle.save();
@@ -40,13 +42,13 @@ router.get('/:id', catchAsync(async(req,res) => {
     res.render('puzzles/show', {puzzle})
 }))
 // GET :: get puzzle edit form
-router.get('/:id/edit', catchAsync(async(req,res)=> {
+router.get('/:id/edit',isLoggedIn, catchAsync(async(req,res)=> {
     const {id} = req.params;
     const puzzle = await Puzzle.findById(id);
     res.render('puzzles/edit', {puzzle})
 }))
 // PUT :: update puzzle form
-router.put('/:id', validatePuzzle, catchAsync(async (req, res) => {
+router.put('/:id', validatePuzzle,isLoggedIn, catchAsync(async (req, res) => {
     if(!req.body.puzzle) throw new ExpressError('Invalid Puzzle Data', 400)
     const { id } = req.params;
     const puzzle = await Puzzle.findByIdAndUpdate(id, req.body.puzzle, {runValidators: true})
