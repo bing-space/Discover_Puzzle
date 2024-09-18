@@ -1,22 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
 const Puzzle = require('../models/puzzle');
-const {puzzleSchema} = require('../schemas.js')
-const {isLoggedIn} = require('../middleware')
-
-
-const validatePuzzle = (req,res, next) => {
-    const {error} = puzzleSchema.validate(req.body);
-    console.log(error)
-    if(error){
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    }else{
-        next();
-    }
-}
+const {isLoggedIn, isAuthor, validatePuzzle} = require('../middleware')
 
 // GET :: get the new puzzle form
 router.get('/new',isLoggedIn, (req,res) => {
@@ -25,8 +11,10 @@ router.get('/new',isLoggedIn, (req,res) => {
 // POST :: post the new puzzle form
 router.post('/', validatePuzzle,isLoggedIn, catchAsync(async(req,res) =>{
     const newPuzzle = new Puzzle(req.body.puzzle);
+    newPuzzle.author = req.user._id;
     console.log(newPuzzle)
     await newPuzzle.save();
+    req.flash('success','Successfully made a new puzzle')
     res.redirect(`/puzzles/${newPuzzle._id}`)
 }))
 // GET :: get puzzles list:
@@ -38,27 +26,37 @@ router.get('/', catchAsync(async (req, res) => {
 // GET :: show puzzle detail by id
 router.get('/:id', catchAsync(async(req,res) => {
     const {id} = req.params;
-    const puzzle = await Puzzle.findById(id).populate('reviews');;
+    const puzzle = await Puzzle.findById(id).populate({path: 'reviews', populate: {path: 'author'}}).populate('author');
+    if(!puzzle){
+        req.flash('error','Cannot find that puzzle')
+        return res.redirect(`/puzzles`)
+    }
     res.render('puzzles/show', {puzzle})
 }))
 // GET :: get puzzle edit form
 router.get('/:id/edit',isLoggedIn, catchAsync(async(req,res)=> {
     const {id} = req.params;
     const puzzle = await Puzzle.findById(id);
+    if(!puzzle){
+        req.flash('error','Cannot find that puzzle')
+        return res.redirect(`/puzzles`)
+    }
     res.render('puzzles/edit', {puzzle})
 }))
 // PUT :: update puzzle form
-router.put('/:id', validatePuzzle,isLoggedIn, catchAsync(async (req, res) => {
-    if(!req.body.puzzle) throw new ExpressError('Invalid Puzzle Data', 400)
+router.put('/:id', validatePuzzle,isLoggedIn,isAuthor, catchAsync(async (req, res) => {
+    // if(!req.body.puzzle) throw new ExpressError('Invalid Puzzle Data', 400)
     const { id } = req.params;
     const puzzle = await Puzzle.findByIdAndUpdate(id, req.body.puzzle, {runValidators: true})
+    req.flash('success','Successfully updated a puzzle')
     // console.log(puzzle)
     res.redirect(`/puzzles/${puzzle._id}`);
 }))
 // DELETE :: delete the puzzle
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
-    const puzzle = await Puzzle.findByIdAndDelete(id);
+    await Puzzle.findByIdAndDelete(id);
+    req.flash('success','Successfully deleted puzzle')
     res.redirect('/puzzles');
 }))
 

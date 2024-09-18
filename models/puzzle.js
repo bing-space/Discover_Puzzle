@@ -9,6 +9,10 @@ const PuzzleSchema = new Schema({
     manufacturer: String,
     image: String,
     keyword: Array,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref:'User'
+    },
     reviews: [
         {
             type: Schema.Types.ObjectId,

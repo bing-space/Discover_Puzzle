@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const Puzzle = require('../models/puzzle')
 const { title, piece, size } = require('./seedHelpers')
 
-
 mongoose.connect('mongodb://127.0.0.1:27017/discover-puzzle')
     .then(() => {
         console.log("Connection Open")
@@ -22,6 +21,7 @@ const seedDB = async () => {
     for (let i = 0; i < 20; i++) {
         const random1000 = Math.floor(Math.random() * 10);
         const createPuzzle = new Puzzle({
+            author: '66e8c94161fd1a82bdfc07f9',
             title: `${sample(title)}`,
             piece: `${sample(piece)}`,
             size:  `${sample(size)}`,
