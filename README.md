@@ -23,6 +23,10 @@
 app.js
 schemas.js
 middleware.js
+controllers
+|- puzzles.js
+|- reviews.js
+|- users.js
 models
 |- puzzle.js
 |- review.js
@@ -54,6 +58,7 @@ public
 |- javascript
    |- validForms.js
 |- stylesheets
+   |- stars.css
 routes
 |- puzzles.js
 |- reviews.js
